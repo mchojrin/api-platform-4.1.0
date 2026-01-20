@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\SubscriptionLevelRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\PropertyAccess\PropertyPath;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(mercure: true)]
 #[ORM\Entity(repositoryClass: SubscriptionLevelRepository::class)]
@@ -22,6 +24,7 @@ class SubscriptionLevel
     private ?int $minWaitDays = null;
 
     #[ORM\Column]
+    #[Assert\GreaterThan(propertyPath: "minWaitDays")]
     private ?int $maxWaitDays = null;
 
     public function getId(): ?int
