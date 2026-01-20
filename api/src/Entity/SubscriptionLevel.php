@@ -21,6 +21,7 @@ class SubscriptionLevel
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Assert\GreaterThanOrEqual(0)]
     private ?int $minWaitDays = null;
 
     #[ORM\Column]

@@ -3,10 +3,16 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource(mercure: true)]
+#[ApiResource(mercure: true, security: "is_granted('ROLE_USER')")]
+#[Get]
+#[GetCollection]
+#[Post(security: "is_granted('ROLE_WRITER')")]
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
 {
@@ -49,5 +55,10 @@ class Article
         $this->assignement = $assignement;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getTitle();
     }
 }
