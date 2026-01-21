@@ -5,7 +5,6 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\SubscriptionLevelRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(mercure: true)]
@@ -27,6 +26,13 @@ class SubscriptionLevel
     #[ORM\Column]
     #[Assert\GreaterThan(propertyPath: "minWaitDays")]
     private ?int $maxWaitDays = null;
+    
+    public function __construct(string $name, int $minWaitDays, int $maxWaitDays){
+        $this->name = $name;
+        $this->minWaitDays = $minWaitDays;
+        $this->maxWaitDays = $maxWaitDays;
+    }
+    
 
     public function getId(): ?int
     {
