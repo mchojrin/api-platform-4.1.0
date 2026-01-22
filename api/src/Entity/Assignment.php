@@ -71,4 +71,9 @@ class Assignment
 
         return $this;
     }
+
+    public function getClient(): Client
+    {
+        return $this->getRequest()->getClient();
+    }
 }

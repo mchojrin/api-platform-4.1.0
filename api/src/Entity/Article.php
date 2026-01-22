@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[Get]
 #[GetCollection]
 #[Post(security: "is_granted('ROLE_WRITER')")]
+#[Get(security: "object.getAuthor() == user or object.getClient() == user")]
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
 {
@@ -55,6 +56,16 @@ class Article
         $this->assignement = $assignement;
 
         return $this;
+    }
+
+    public function getAuthor(): Writer
+    {
+        return $this->getAssignement()->getWriter();
+    }
+
+    public function getClient() : Client
+    {
+        return $this->getAssignement()->getClient();
     }
 
     public function __toString(): string
