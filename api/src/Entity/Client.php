@@ -32,4 +32,9 @@ class Client extends User
     {
         return array_merge(parent::getRoles(), ['ROLE_CLIENT']);
     }
+
+    public function getMaxWaitDays(): int
+    {
+        return $this->getSubscriptionLevel()->getMaxWaitDays();
+    }
 }

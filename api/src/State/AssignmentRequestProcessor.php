@@ -5,6 +5,7 @@ namespace App\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Entity\AssignmentRequest;
+use DateInterval;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
@@ -21,8 +22,11 @@ class AssignmentRequestProcessor implements ProcessorInterface
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): mixed
     {
-        $data->setClient($this->security->getUser());
-        $data->setDate(new \DateTimeImmutable());
+        $today = new \DateTimeImmutable();
+        $client = $this->security->getUser();
+        $data->setClient($client);
+        $data->setDate($today);
+        $data->setDeadeline($today->add(new \DateInterval("P{$client->getMaxWaitDays()}D")));
 
         return $this->persistProcessor->process($data, $operation, $uriVariables, $context);
     }

@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Post;
 use App\Enum\AssignmentRequestStatus;
 use App\State\AssignmentRequestProcessor;
 use ApiPlatform\OpenApi\Model;
+use DateTimeImmutable;
 
 #[ApiResource(
     mercure: true,
@@ -50,6 +51,9 @@ class AssignmentRequest
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: false)]
     private ?\DateTimeImmutable $date = null;
+
+    #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: false)]
+    private ?\DateTimeImmutable $deadline = null;
 
     #[ORM\OneToOne(mappedBy: 'request', cascade: ['persist', 'remove'])]
     private ?Assignment $assignment = null;
@@ -107,5 +111,17 @@ class AssignmentRequest
     public function getStatus(): AssignmentRequestStatus 
     {
         return !empty($this->getAssignment()) ? AssignmentRequestStatus::Scheduled : AssignmentRequestStatus::Pending;
+    }
+
+    public function setDeadeline(\DateTimeImmutable $deadline): static
+    {
+        $this->deadline = $deadline;
+
+        return $this;
+    }
+
+    public function getDeadeline(): \DateTimeImmutable
+    {
+        return $this->deadline;
     }
 }
